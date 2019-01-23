@@ -1,5 +1,5 @@
 Vue.filter('date', time => moment(time).format('DD/MM/YY, HH:mm'));
-new Vue({
+app = new Vue({
     el: "#notebook",
     data: {
         content: localStorage.getItem('content') || 'You can write in **markdown**',
@@ -20,6 +20,29 @@ new Vue({
             return this.notes.slice().sort((a, b) => a.created - b.create)
                 .sort((a, b) => (a.favorite === b.favorite) ? 0: a.favorite ? -1 : 1)
         },
+        linesCount(){
+            if (this.selectedNote){
+                // 计算换行符的个数
+                 return this.selectedNote.content.split(/\r\n|\r|\n/).length
+            }
+        },
+        wordsCount() {
+            var s = this.selectedNote.content
+            // Turn new line cahracters into white-spaces
+            s = s.replace(/\n/g, ' ')
+            // Exclude start and end white-spaces
+            s = s.replace(/(^\s*)|(\s*$)/gi, '')
+            // Turn 2 or more duplicate white-spaces into 1
+            s = s.replace(/[ ]{2,}/gi, ' ')
+            // Return the number of spaces
+            return s.split(' ').length
+        },
+
+        charactersCount(){
+            if (this.selectedNote) {
+                return this.selectedNote.content.split('').length
+            }
+        }
     },
     methods: {
         saveNote() {
@@ -27,7 +50,7 @@ new Vue({
             this.reportOperation( 'saving')
         },
         saveNotes() {
-            localStorage.setItem('notes', JSON.stringify(this.notes))
+            localStorage.setItem('notes', JSON.stringify(this.notes));
             console.log("Notes saved!", new Date())
         },
         reportOperation(opName) {

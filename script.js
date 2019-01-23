@@ -15,6 +15,10 @@ new Vue({
             // Markdown rendered to HTML
             return this.selectedNote ? marked(this.selectedNote.content) : ''
         },
+        sortedNotes(){
+            return this.notes.slice().sort((a, b) => a.created - b.create)
+                .sort((a, b) => (a.favorite === b.favorite) ? 0: a.favorite ? -1 : 1)
+        },
     },
     methods: {
         saveNote() {
@@ -41,7 +45,18 @@ new Vue({
         },
         selectNote(note){
             this.selectedId = note.id
-        }
+        },
+        removeNote(){
+            if (this.selectedNote && confirm('Delete the note?')){
+                const index = this.notes.indexOf(this.selectedNote);
+                if (index !== -1) {
+                    this.notes.splice(index, 1)
+                }
+            }
+        },
+        favoriteNote(){
+            this.selectedNote.favorite = !this.selectedNote.favorite
+        },
     },
 
     watch: {

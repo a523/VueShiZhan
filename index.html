@@ -18,9 +18,12 @@
         v-bind:title="notes.length + ' notes already'"><i class="material-icons">add</i>Add note</button>
       </div>
       <div class="notes">
-        <div class="note" v-for="note in notes"
-        @click="selectNote(note)"
-        :class="{selected: note === selectedNote }">{{ note.title }}</div>
+        <div class="note" v-for="note in sortedNotes"
+             @click="selectNote(note)"
+             :class="{selected: note === selectedNote }">
+          <i class="icon material-icons" v-if="note.favorite">star</i>
+          {{ note.title }}
+        </div>
       </div>
     </aside>
 
@@ -28,6 +31,12 @@
     <!-- Main pane -->
   <template v-if="selectedNote">
     <section class="main">
+      <div class="toolbar">
+        <input v-model="selectedNote.title" placeholder="Note title">
+        <button @click="removeNote" title="Remove note"><i class="material-icons">delete</i></button>
+        <button @click="favoriteNote" title="Favorite note">
+          <i class="material-icons">{{selectedNote.favorite ? 'star' : 'star_border'}}</i></button>
+      </div>
       <textarea v-model="selectedNote.content"></textarea>
     </section>
 

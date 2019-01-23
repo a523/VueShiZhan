@@ -9,6 +9,7 @@
   <!-- Include the library in the page -->
   <script src="vue.js"></script>
   <script src="https://unpkg.com/marked"></script>
+  <script src="https://unpkg.com/moment"></script>
 
   <!-- Notebook app -->
   <div id="notebook">
@@ -38,6 +39,10 @@
           <i class="material-icons">{{selectedNote.favorite ? 'star' : 'star_border'}}</i></button>
       </div>
       <textarea v-model="selectedNote.content"></textarea>
+      <div class="toolbar status-bar">
+        <span class="label">Created</span>
+        <span class="value">{{ selectedNote.created | date}}</span>
+      </div>
     </section>
 
     <!-- Preview pane -->

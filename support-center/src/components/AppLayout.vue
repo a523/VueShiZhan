@@ -4,13 +4,18 @@
         <div><img src="../assets/logo.svg"></div>
         <div>My shirt shop</div>
       </header>
+      <NavMenu/>
       <router-view />
     </div>
 </template>
 
 <script>
+  import NavMenu from './NavMenu.vue'
     export default {
-        name: "AppLayout"
+        name: "AppLayout",
+        components: {
+          NavMenu,
+        },
     }
 </script>
 

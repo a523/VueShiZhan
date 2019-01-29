@@ -4,7 +4,7 @@
       <div class="error" v-if="error">Can't load the questions</div>
       <Loading v-if="loading"/>
       <section class="list">
-        <article v-for="question of questions">
+        <article v-for="question of questionLists">
           <h2 v-html="question.title"></h2>
           <p v-html="question.content"></p>
         </article>
@@ -13,8 +13,13 @@
 </template>
 
 <script>
+    import RemoteData from "../mixins/RemoteData";
+
     export default {
         name: "FAQ",
+        mixins: [
+          RemoteData({questionLists: 'questions'}),
+        ],
         data () {
           return {
             questions: [],
@@ -25,12 +30,7 @@
       async created() {
           this.loading = true
           try {
-              const response = await fetch('http://localhost:3000/questions');
-              if (response.ok) {
-                this.questions = await response.json()
-              } else {
-                throw new Error('error')
-              }
+              this.questions = await this.$fetch('questions')
           } catch (e) {
               this.error = e
           }

@@ -20,5 +20,3 @@ new Vue({
   router,
   data: state,
 });
-
-console.log(this.$state);

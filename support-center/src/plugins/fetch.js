@@ -1,12 +1,20 @@
 let baseUrl
 
 export async function $fetch(url) {
-  const response = await fetch(`${baseUrl}${url}`)
+  const finalOptions = Object.assign({},{
+    headers:{
+      'Content-Type': 'application/json',
+    },
+    credentials: 'include',
+  }, options)
+  const response = await fetch(`${baseUrl}${url}`, finalOptions)
   if (response.ok) {
     const data = await response.json()
     return data
   } else {
-    const error = new Error('error')
+    const message = await response.text()
+    const error = new Error(message)
+    error.response =response
     throw error
   }
 }
@@ -17,3 +25,4 @@ export default {
     Vue.prototype.$fetch = $fetch
   }
 }
+

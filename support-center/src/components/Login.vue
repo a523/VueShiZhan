@@ -100,10 +100,25 @@ export default {
       await this[this.model]()
     },
     async login() {
-
+      this.$state.user = await this.$fetch('login', {
+        method: 'POST',
+        body: JSON.stringify({
+          username: this.username,
+          password: this.password,
+        }),
+      })
+      this.$route.push({name: 'home'})
     },
     async signup(){
-
+      await this.$fetch('signup', {
+        method: 'POST',
+        body: JSON.stringify({
+          username: this.username,
+          password: this.password,
+          email: this.email,
+        }),
+      })
+      this.model = 'login'
     },
   }
 }
